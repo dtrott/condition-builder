@@ -76,12 +76,16 @@ class Condition
       when 0
         raise "No value specified for Condition"
       when 1
-        if values.last.is_a?(Array)
-          left << "#{column} IN (?)"
+        if values.last == nil
+          left << ?#{column} IS NULL?
         else
-          left << "#{column} = ?"
+          if values.last.is_a?(Array)
+            left << "#{column} IN (?)"
+          else
+            left << "#{column} = ?"
+          end
+          right << values.last
         end
-        right << values.last
       when 2
         operator = values.shift
         if values.last.is_a?(Array)
