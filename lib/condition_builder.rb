@@ -48,7 +48,8 @@ class Condition
   end
   
   def block(&block)
-    @args << self.class.new(&block)
+    result = self.class.new(&block)
+    @args << result unless result.args.empty?
   end
 
   def where(conditions = @args)
